@@ -12,14 +12,11 @@ const server = new Hapi.Server();
 
 var routes = require('./routes.js'); //require routes
 
-var host = env.NODE_IP || 'localhost';
-var port = env.NODE_PORT || 3001;
+// var host = env.NODE_IP || 'localhost';
+var port = env.PORT || 3001;
 var options = dbconfig.config('admin', 'bot3598');
-console.log(options);
-
 
 server.connection({
-    host: host,
     port: port
 });
 
