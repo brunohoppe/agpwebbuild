@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "bruno botelho",
+  "license": "ISC",
+  "dependencies": {
+    "good": "^7.3.0",
+    "good-console": "^6.4.0",
+    "good-squeeze": "^5.0.2",
+    "hapi": "^16.5.2",
+    "hapi-mongodb": "^4.1.0",
+    "joi": "^9.2.0"
+  }
 }
