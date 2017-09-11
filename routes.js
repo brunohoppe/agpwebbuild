@@ -242,6 +242,30 @@
                 },
                 cors: true
             }
+        },
+        {
+            method: 'POST',
+            path: '/login',
+            config: {
+                handler: (request, reply) => {
+                    var db = request.server.plugins['hapi-mongodb'].db;
+                    let usuario = request.payload;
+                    db.collection('usuarios').findOne({
+                        "email": usuario.email,
+                        "senha": usuario.senha
+                    }, function(err, result) {
+                        if (err) return reply(Boom.internal('Internal MongoDB error', err));
+                        if(!result){
+                            return reply({}).code(404);
+                        }
+                        return reply(result);
+                        
+                    });
+
+                },
+                cors: true
+
+            }
         }];
     }
     module.exports = routes();
