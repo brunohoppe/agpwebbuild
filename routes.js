@@ -256,7 +256,7 @@
                     }, function(err, result) {
                         if (err) return reply(Boom.internal('Internal MongoDB error', err));
                         if(!result){
-                            return reply({}).code(404);
+                            return reply({}).code(400);
                         }
                         return reply(result);
                         
