@@ -244,12 +244,12 @@
             }
         },
         {
-            method: 'GET',
+            method: 'POST',
             path: '/login',
             config: {
                 handler: (request, reply) => {
                     var db = request.server.plugins['hapi-mongodb'].db;
-                    let usuario = request.query;
+                    let usuario = request.payload;
                     db.collection('usuarios').findOne({
                         "email": usuario.email,
                         "senha": usuario.senha
