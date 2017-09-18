@@ -18,13 +18,25 @@
         return routesArr;
     }
 
+    function defaultServerRoutes() {
+        return [{
+            method: 'GET',
+            path: '/ws',
+            config: {
+                handler: (request, reply) => {
+                    reply('Server On');
+                }
+            }
+        }, ];
+    }
+
     function defaultArrRoutes() {
         return [{
             method: 'GET',
             path: '/',
             config: {
                 handler: (request, reply) => {
-                    reply('Server On');
+                    reply.file('dist/index.html');
                 }
             }
         }, ];
@@ -127,7 +139,7 @@
     function usuarioArrRoute(Joi) {
         return [{
             method: 'GET',
-            path: '/usuarios',
+            path: '/ws/usuarios',
             config: {
                 handler: (request, reply) => {
                     var db = request.server.plugins['hapi-mongodb'].db;
@@ -137,7 +149,7 @@
             }
         }, {
             method: 'GET',
-            path: '/usuario',
+            path: '/ws/usuario',
             config: {
                 handler: (request, reply) => {
                     var db = request.server.plugins['hapi-mongodb'].db;
@@ -154,7 +166,7 @@
             }
         }, {
             method: 'GET',
-            path: '/usuario/login',
+            path: '/ws/usuario/login',
             config: {
                 handler: (request, reply) => {
                     var db = request.server.plugins['hapi-mongodb'].db;
@@ -172,7 +184,7 @@
             }
         }, {
             method: 'GET',
-            path: '/usuario/{id}',
+            path: '/ws/usuario/{id}',
             config: {
                 handler: (request, reply) => {
                     var db = request.server.plugins['hapi-mongodb'].db;
@@ -190,7 +202,7 @@
             }
         }, {
             method: 'POST',
-            path: '/usuario/novo',
+            path: '/ws/usuario/novo',
             config: {
                 handler: (request, reply) => {
                     let usuario = request.payload;
@@ -217,7 +229,7 @@
             }
         }, {
             method: 'POST',
-            path: '/usuario/completo',
+            path: '/ws/usuario/completo',
             config: {
                 handler: (request, reply) => {
                     let usuario = request.payload;
@@ -245,7 +257,7 @@
         },
         {
             method: 'POST',
-            path: '/login',
+            path: '/ws/login',
             config: {
                 handler: (request, reply) => {
                     var db = request.server.plugins['hapi-mongodb'].db;

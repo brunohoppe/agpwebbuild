@@ -3,6 +3,7 @@
 const Hapi = require('hapi');
 const MongoDB = require('hapi-mongodb');
 const dbconfig = require('./config/dbconfig');
+const inert = require('inert');
 const env = process.env;
 const Good = require('good');
 
@@ -20,6 +21,8 @@ server.connection({
     port: port
 });
 
+
+
 // Add the route
 for (var route in routes) {
     server.route(routes[route]);
@@ -34,5 +37,31 @@ server.register({
         throw err;
     }
 
-    server.start((err) => console.log('Server started at:', server.info.uri));
+    server.register({
+        register: MongoDB,
+        options: options
+    }, (err) => {
+        if (err) {
+            console.error(err);
+            throw err;
+        }
+
+        //Serving static files
+        server.route({
+            method: 'GET',
+            path: '/{param*}',
+            handler: {
+                directory: {
+                    path: 'dist'
+                }
+            }
+        });
+
+        server.start((err) => console.log('Server started at:', server.info.uri));
+
+    });
+    
+
+
+    
 });
