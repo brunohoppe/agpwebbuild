@@ -28,40 +28,28 @@ for (var route in routes) {
     server.route(routes[route]);
 }
 
-server.register({
+server.register([{
     register: MongoDB,
     options: options
-}, (err) => {
+},{
+    register: inert,
+    options: {}
+}], (err) => {
     if (err) {
         console.error(err);
         throw err;
     }
 
-    server.register({
-        register: MongoDB,
-        options: options
-    }, (err) => {
-        if (err) {
-            console.error(err);
-            throw err;
-        }
-
-        //Serving static files
-        server.route({
-            method: 'GET',
-            path: '/{param*}',
-            handler: {
-                directory: {
-                    path: 'dist'
-                }
+    //Serving static files
+    server.route({
+        method: 'GET',
+        path: '/{param*}',
+        handler: {
+            directory: {
+                path: 'dist'
             }
-        });
-
-        server.start((err) => console.log('Server started at:', server.info.uri));
-
+        }
     });
-    
 
-
-    
+    server.start((err) => console.log('Server started at:', server.info.uri));
 });
