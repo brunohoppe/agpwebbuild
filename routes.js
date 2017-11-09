@@ -14,6 +14,9 @@
         routesArr = routesArr.concat(produtoArrRoute());
 
         routesArr = routesArr.concat(usuarioArrRoute(Joi));
+		
+		routesArr = routesArr.concat(categoriaGastos(Joi));
+		
 
         return routesArr;
     }
@@ -280,5 +283,36 @@
             }
         }];
     }
+	function categoriaGastos(Joi){
+		return [{
+            method: 'POST',
+            path: '/ws/categoriagastos',
+            config: {
+                handler: (request, reply) => {
+                    let categoria = request.payload;
+                    var db = request.server.plugins['hapi-mongodb'].db;
+                    db.collection('categorias').save(categoria, (err, result) => {
+                        if (err) return reply(Boom.wrap(err, "Serviço Indisponível"));
+                        categoria.mensagem = "Categoria salva com sucesso!";
+                        reply(categoria);
+                    });
+
+                },
+                cors: true
+
+            }
+        },
+        {
+            method: 'GET',
+            path: '/ws/categoriasgastos',
+            config: {
+                handler: (request, reply) => {
+                    var db = request.server.plugins['hapi-mongodb'].db;
+                    reply(db.collection('categorias').find({}).limit(20).toArray());
+                },
+                cors: true
+            }
+        }]
+	}
     module.exports = routes();
 })();
