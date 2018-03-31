@@ -6,16 +6,19 @@
         var routesArr = [];
         //------Default Routes------//
         routesArr = routesArr.concat(defaultArrRoutes());
+        routesArr = routesArr.concat(genericRoute('api', ['GET', 'POST', 'PUT']));
+        routesArr = routesArr.concat(genericRoute('agpdominios', ['GET', 'POST', 'PUT']));
+        routesArr = routesArr.concat(genericRoute('authentication', ['POST']));
         //------Lista De Compras Routes------//
-        routesArr = routesArr.concat(listacomprasArrRoutes(Joi));
+        // routesArr = routesArr.concat(listacomprasArrRoutes(Joi));
         //------Supermercado Routes------//
-        routesArr = routesArr.concat(supermercadoArrRoutes(Joi));
+        // routesArr = routesArr.concat(supermercadoArrRoutes(Joi));
         //------Produto Routes------//
-        routesArr = routesArr.concat(produtoArrRoute());
+        // routesArr = routesArr.concat(produtoArrRoute());
 
-        routesArr = routesArr.concat(usuarioArrRoute(Joi));
+        // routesArr = routesArr.concat(usuarioArrRoute(Joi));
 		
-		routesArr = routesArr.concat(categoriaGastos(Joi));
+		// routesArr = routesArr.concat(categoriaGastos(Joi));
 		
 
         return routesArr;
@@ -43,6 +46,23 @@
                 }
             }
         }, ];
+    }
+    function genericRoute(pattern, verboseArr) {
+      return verboseArr.map(function(verb){
+        return {
+          method: verb,
+          path: '/'+ pattern +'/{params*}',
+          config: {
+            handler: {
+              proxy: {
+                  uri: '{protocol}://goclassbackend.sa-east-1.elasticbeanstalk.com/{path}',
+                  passThrough: true,
+                  xforward: true
+              }
+            }
+          }
+        }
+      });
     }
 
     function listacomprasArrRoutes(Joi) {
